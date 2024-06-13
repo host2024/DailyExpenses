@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../lib/api/auth';
 import { Container, InputGroup, Button, ToggleButton } from '../components/LoginsStyled';
 
-function Login() {
+function Login({ setUser }) {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
+    const LoginCheck = async () => {
+        const { userId, nickname, avatar } = await login({ id: id, password: password });
+
+        setUser({ userId, nickname, avatar });
+    };
 
     return (
         <Container>
@@ -17,7 +24,7 @@ function Login() {
                 <label htmlFor="password">비밀번호</label>
                 <input type="password" placeholder="비밀번호 입력" onChange={(e) => setPassword(e.target.value)} />
             </InputGroup>
-            <Button>로그인</Button>
+            <Button onClick={LoginCheck}>로그인</Button>
 
             <ToggleButton
                 onClick={() => {

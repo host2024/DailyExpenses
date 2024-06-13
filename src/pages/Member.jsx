@@ -6,7 +6,7 @@ import { register } from '../lib/api/auth';
 function Member() {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
-    const [user, setUser] = useState('');
+    const [nickname, setNickname] = useState('');
     const navigate = useNavigate();
 
     const Login = async (e) => {
@@ -23,12 +23,12 @@ function Member() {
             return;
         }
 
-        if (!user.trim()) {
+        if (!nickname.trim()) {
             alert('닉네임 공백');
             return;
         }
 
-        const response = await register({ id: id, password: password, nickname: user });
+        const response = await register({ id: id, password: password, nickname: nickname });
         if (response) {
             confirm('가입 완료.');
             navigate('/login');
@@ -64,8 +64,8 @@ function Member() {
                 <input
                     type="text"
                     placeholder="닉네임 입력"
-                    value={user}
-                    onChange={(e) => setUser(e.target.value)}
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
                     minLength={1}
                     maxLength={10}
                 />

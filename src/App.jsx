@@ -6,8 +6,12 @@ import Member from './pages/Member';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+    const [user, setUser] = useState(null);
+
+    console.log('현재:', user);
     return (
         <>
             <Provider store={store}>
@@ -15,7 +19,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/detail/:id" element={<Detail />} />
-                        <Route path="/login" element={<Login />} />
+                        <Route path="/login" element={<Login setUser={setUser} />} />
                         <Route path="/member" element={<Member />} />
                     </Routes>
                 </BrowserRouter>

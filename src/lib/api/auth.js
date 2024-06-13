@@ -15,3 +15,17 @@ export const register = async ({ id, password, nickname }) => {
         alert(error?.response?.data?.message);
     }
 };
+
+export const login = async ({ id, password }) => {
+    try {
+        const response = await axios.post(AUTH_API_HOST + '/login?expiresIn=10m', {
+            id: id,
+            password: password,
+        });
+        localStorage.setItem('accessToken', response.data.accessToken);
+        return response.data;
+    } catch (error) {
+        console.log(error?.response?.data?.message);
+        alert(error?.response?.data?.message);
+    }
+};
