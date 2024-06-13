@@ -11,7 +11,9 @@ function Login({ setUser }) {
     const LoginCheck = async () => {
         const { userId, nickname, avatar } = await login({ id: id, password: password });
 
+        alert('로그인 완료');
         setUser({ userId, nickname, avatar });
+        navigate('/');
     };
 
     return (

@@ -1,44 +1,31 @@
+import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Detail from './pages/Detail';
 import Login from './pages/Login';
 import Member from './pages/Member';
+import Profile from './pages/Profile';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import Layout from './components/Layout';
 import './App.css';
-import { useEffect, useState } from 'react';
-import { getUserInfo } from './lib/api/auth';
-
 function App() {
     const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        getUserInfo().then((res) => {
-            if (res) {
-                setUser({
-                    userId: res.id,
-                    nickname: res.nickname,
-                    avatar: res.avatar,
-                });
-            }
-        });
-    }, []);
-
-    console.log('현재:', user);
     return (
-        <>
-            <Provider store={store}>
-                <BrowserRouter>
-                    <Routes>
+        <Provider store={store}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Layout user={user} setUser={setUser} />}>
                         <Route path="/" element={<Home />} />
-                        <Route index element={<Home />} />
                         <Route path="/detail/:id" element={<Detail />} />
-                        <Route path="/login" element={<Login setUser={setUser} />} />
                         <Route path="/member" element={<Member />} />
-                    </Routes>
-                </BrowserRouter>
-            </Provider>
-        </>
+                        <Route path="/profile" element={<Profile user={user} setUser={setUser} />} />
+                    </Route>
+                    <Route path="/login" element={<Login setUser={setUser} />} />
+                </Routes>
+            </BrowserRouter>
+        </Provider>
     );
 }
 

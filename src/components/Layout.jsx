@@ -1,21 +1,60 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getUserInfo } from '../lib/api/auth';
+import {
+    Navbar,
+    NavItems,
+    NavItem,
+    UserProfile,
+    UserAvatar,
+    UserName,
+    LogoutButton,
+    PageContainer,
+} from './LayoutStyled';
 
-const Navbar = styled.nav`
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    width: calc(100% - 2rem);
-    top: 0;
-    z-index: 1000;
-    max-width: 1240px;
-`;
+export default function Layout({ user, setUser }) {
+    const navigate = useNavigate();
 
-const NavItems = styled.div`
-    display: flex;
-    align-items: center;
-`;
+    useEffect(() => {
+        getUserInfo().then((res) => {
+            if (res) {
+                setUser({
+                    userId: res.id,
+                    nickname: res.nickname,
+                    avatar: res.avatar,
+                });
+            } else {
+                Logout();
+            }
+        });
+    }, []);
+
+    const Logout = () => {
+        setUser(null);
+        navigate('/Login');
+        localStorage.clear();
+    };
+
+    return (
+        <>
+            <Navbar>
+                <NavItems>
+                    <NavItem to="/">Home</NavItem>
+                    <NavItem to="profile">내 프로필</NavItem>
+                </NavItems>
+                <UserProfile>
+                    {user && (
+                        <>
+                            <UserAvatar src={user.avatar} alt="User Avatar" />
+                            <UserName>{user.nickname}</UserName>
+                            <LogoutButton onClick={Logout}>로그아웃</LogoutButton>
+                        </>
+                    )}
+                </UserProfile>
+            </Navbar>
+            <PageContainer>
+                <Outlet />
+            </PageContainer>
+        </>
+    );
+}
