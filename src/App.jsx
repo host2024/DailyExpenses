@@ -31,6 +31,7 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route index element={<Home />} />
                         <Route path="/detail/:id" element={<Detail />} />
                         <Route path="/login" element={<Login setUser={setUser} />} />
                         <Route path="/member" element={<Member />} />
