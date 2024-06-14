@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { editExpense, deleteExpense } from '../redux/slices/expensesSlice';
-import { useQuery } from '@tanstack/react-query';
-import { getExpense } from '../lib/api/expense';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getExpense, putExpense } from '../lib/api/expense';
 
 const Container = styled.div`
     max-width: 800px;
@@ -82,6 +82,14 @@ export default function Detail() {
         }
     }, [selectedExpense]);
 
+    const mutationEdit = useMutation({
+        mutationFn: putExpense,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['expenses']);
+            navigate('/');
+        },
+    });
+
     const handleEdit = () => {
         const datePattern = /^\d{4}-\d{2}-\d{2}$/;
         if (!datePattern.test(date)) {
@@ -95,14 +103,13 @@ export default function Detail() {
 
         const newExpense = {
             id: id,
-            date: date,
+            date: id,
             item: item,
-            amount: amount,
+            amount: parseInt(amount, 10),
             description: description,
         };
 
-        dispatch(editExpense(newExpense));
-        navigate('/');
+        mutationEdit.mutate(newExpense);
     };
 
     const handleDelete = () => {

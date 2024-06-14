@@ -31,3 +31,14 @@ export const postExpense = async (newExpense) => {
         alert('오류');
     }
 };
+
+export const putExpense = async (updatedExpense) => {
+    const { id, ...rest } = updatedExpense;
+    try {
+        const { data } = await axios.put(`${JSON_SERVER_HOST}/expenses/${id}`, rest);
+        return data;
+    } catch (error) {
+        console.error('putExpense Error:', error);
+        throw new Error('지출 업데이트에 실패했습니다.');
+    }
+};
