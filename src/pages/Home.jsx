@@ -1,38 +1,32 @@
-import styled from "styled-components";
-import { useState, useContext } from "react";
-import MonthNavigation from "../components/MonthNavigation";
-import ExpenseList from "../components/ExpenseList";
-import CreateExpense from "../components/CreateExpense";
-import { useSelector } from "react-redux";
+import styled from 'styled-components';
+import { useState } from 'react';
+import MonthNavigation from '../components/MonthNavigation';
+import ExpenseList from '../components/ExpenseList';
+import CreateExpense from '../components/CreateExpense';
 
 const Container = styled.main`
-  max-width: 800px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 0 auto;
 `;
 
 export const Section = styled.section`
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
 `;
 
-export default function Home() {
-  const [month, setMonth] = useState(1);
-  const expenses = useSelector((state) => state.expenses);
+export default function Home(user) {
+    const [month, setMonth] = useState(1);
 
-  const filteredExpenses = expenses.filter(
-    (expense) => expense.month === month
-  );
-
-  return (
-    <Container>
-      <MonthNavigation month={month} setMonth={setMonth} />
-      <CreateExpense month={month} />
-      <ExpenseList expenses={filteredExpenses} />
-    </Container>
-  );
+    return (
+        <Container>
+            <MonthNavigation month={month} setMonth={setMonth} />
+            <CreateExpense user={user} month={month} />
+            <ExpenseList />
+        </Container>
+    );
 }
