@@ -12,6 +12,16 @@ export const getExpenses = async () => {
     }
 };
 
+export const getExpense = async ({ queryKey }) => {
+    try {
+        const response = await axios.get(`${JSON_SERVER_HOST}/expenses/${queryKey[1]}`);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        alert('오류');
+    }
+};
+
 export const postExpense = async (newExpense) => {
     try {
         const { data } = await axios.post(`${JSON_SERVER_HOST}/expenses`, newExpense);
